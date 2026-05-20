@@ -19,119 +19,149 @@ Para asegurar que los calculos sean 100% correctos y que el sistema no se caiga 
 *   **R5 (Super Promocion):** Si se aplica un descuento muy alto (de 80% o mas), el sistema le regala al cliente un **5% de descuento adicional acumulado** sobre lo restante.
 *   **R6 (Soporte Decimal):** La calculadora debe permitir decimales tanto en los precios como en los porcentajes de descuento.
 
-### Herramientas utilizadas en el proyecto:
+### Ecosistema de Herramientas Usadas:
 *   **Python:** Lenguaje principal de programacion.
-*   **Pytest:** Framework para automatizar y agrupar las pruebas de forma moderna y rapida.
-*   **Coverage.py:** Herramienta para medir que tanto codigo esta vigilado por las pruebas.
-*   **Faker:** Generador de datos aleatorios para pruebas de estres.
-*   **Git & GitHub:** Herramientas para el control de versiones y almacenamiento del codigo en la nube.
-*   **GitHub Actions:** Servidor en la nube para ejecutar pruebas de forma automatica (Integracion Continua).
+*   **Pytest:** Framework para escribir y ejecutar pruebas unitarias de forma rapida y parametrizada.
+*   **Unittest:** Libreria estandar de pruebas de Python para validacion tradicional basada en clases.
+*   **Faker:** Generacion pseudoaleatoria de datos de compra para estresar el sistema.
+*   **Coverage.py:** Herramienta que mide que tanto codigo esta cubierto y protegido por las pruebas.
+*   **Git & GitHub:** Control de versiones en la nube y repositorio de codigo.
+*   **GitHub Actions:** Pipeline de CI/CD para la ejecucion automatica de pruebas tras cada push.
 
 ---
 
 ## 🧪 2. Pruebas Automatizadas con Pytest
 
-**Pytest** es la herramienta principal que usamos para automatizar los examenes del codigo. En lugar de crear complejas clases orientadas a objetos, nos permite escribir funciones de prueba muy directas y legibles utilizando la palabra clave de Python `assert`.
+**Pytest** es la herramienta moderna elegida para automatizar gran parte de los examenes. Mediante el uso de la palabra clave `assert` y la decoracion `@pytest.mark.parametrize`, se simplifica el codigo de pruebas y se ejecutan multiples casos con diferentes entradas en cuestion de milisegundos.
 
-Diseñamos una suite centralizada (`test_calculadora_pytest.py`) que evalua **14 casos distintos** parametrizados para probar cada limite y regla de negocio en cuestion de milisegundos.
-
-### Explicacion de los resultados de la terminal:
-*   **`collected 14 items`**: Pytest leyo los archivos y encontro 14 examenes listos para ejecutarse.
-*   **`PASSED` (en verde)**: Significa que la prueba paso con exito y el programa respondio bien.
-*   **`FAILED` (en rojo)**: Significa que algo fallo en los calculos o el programa se detuvo abruptamente.
-*   **`14 passed in 0.05s`**: Indica que los 14 examenes fueron exitosos en solo 5 centesimas de segundo.
+Diseñamos una suite centralizada (`test_calculadora_pytest.py`) que evalua **14 casos distintos** de limites y comportamiento del negocio.
 
 ### 📸 Evidencia 2.1: Primera Prueba Basica
-Empezamos con una prueba inicial simple para validar que Pytest y la calculadora se comunicaban correctamente.
-![Primera Prueba Simple](/C:/Users/jhonm/.gemini/antigravity/brain/e16d3154-bac8-4d48-994c-0737e264081a/media__1779283849804.png)
+Validacion inicial del entorno de Pytest comunicandose con el modulo de la calculadora.
+![Primera Prueba Simple](extracted_images/media__1779283849804.png)
 
 ### 📸 Evidencia 2.2: Suite Completa de 14 Casos Aprobados
-Ejecutamos la suite de 14 escenarios que abarcan todas las reglas de redondeo, precios y descuentos invalidos, y la super promocion.
-![Suite de 14 Casos](/C:/Users/jhonm/.gemini/antigravity/brain/e16d3154-bac8-4d48-994c-0737e264081a/media__1779283875799.png)
+Ejecucion exitosa de los 14 escenarios de pruebas unitarias parametrizadas en consola.
+![Suite de 14 Casos](extracted_images/media__1779283875799.png)
 
 ### 📸 Evidencia 2.3: Depuracion ante Fallos (Errores Controlados)
-Para demostrar la capacidad de reporte de Pytest, forzamos errores intencionales. Cuando algo falla, Pytest muestra con exactitud que linea causo el problema:
-*   `AssertionError`: El resultado matematico no coincide con el esperado.
-*   `TypeError`: Se intento usar texto en lugar de numeros.
-![Depuracion de Errores](/C:/Users/jhonm/.gemini/antigravity/brain/e16d3154-bac8-4d48-994c-0737e264081a/media__1779284994942.png)
+Visualizacion detallada de como Pytest ayuda a encontrar errores logicos (`AssertionError`) y tipos de datos invalidos (`TypeError`) arrojando trazas comprensibles en consola.
+![Depuracion de Errores](extracted_images/media__1779284994942.png)
 
 ---
 
-## 📝 3. ESPACIO RESERVADO: Pruebas con Unittest
+## 📝 3. Pruebas con Unittest
 
-> [!NOTE]
-> *Espacio reservado para agregar la informacion, codigos y explicaciones sobre las pruebas escritas usando la libreria estándar `unittest`.*
+Para garantizar la retrocompatibilidad y una validacion estructurada en clases, se programaron pruebas con el modulo nativo **Unittest** en la carpeta `Unitest/`.
 
-**[ESPACIO_RESERVADO_TEXTO_Y_EXPLICACION_UNITTEST]**
+### Implementacion de Suite Profunda:
+En el archivo `Unitest/test_calculadora.py`, se implemento la clase `TestCalculadoraDescuentosProfundo` (que hereda de `testtools.TestCase`) usando:
+*   **Faker global con Semilla (Seed: 42):** Para que las pruebas dinamicas den siempre los mismos datos controlados en cada corrida.
+*   **Subtests (`self.subTest()`):** Para aislar e identificar exactamente que limites fallan dentro de una matriz de datos (0%, 79%, 80% y 100%).
+*   **Captura de Excepciones:** Validacion de que la calculadora arroja un `ValueError` ante precios o descuentos fuera del rango de negocio.
 
-### 📸 Evidencia: Pruebas de Unittest
-**[INSERTAR_CAPTURA_EVIDENCIA_UNITTEST]**
+### Ejecucion de Verificacion de Requisitos:
+El script `Unitest/Verificación_Requisitos.py` corre automaticamente todos los modulos unitarios `test_r*.py` correspondientes a cada requisito, validando 7 pruebas de forma exitosa y generando un reporte en formato PDF (`Unitest/Reporte_Pruebas.pdf`).
+
+```bash
+test_analisis_valores_frontera_subtests (__main__.TestCalculadoraDescuentosProfundo) ... ok
+test_descuento_estandar_exito_masivo (__main__.TestCalculadoraDescuentosProfundo) ... ok
+test_error_descuento_fuera_de_rango (__main__.TestCalculadoraDescuentosProfundo) ... ok
+test_error_precio_no_positivo (__main__.TestCalculadoraDescuentosProfundo) ... ok
+test_super_descuento_con_bono (__main__.TestCalculadoraDescuentosProfundo) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.075s
+
+OK
+```
 
 ---
 
-## 🛠️ 4. ESPACIO RESERVADO: Desarrollo Guiado por Pruebas (TDD)
+## 🛠️ 4. Desarrollo Guiado por Pruebas (TDD)
 
-> [!NOTE]
-> *Espacio reservado para detallar el ciclo Red-Green-Refactor (Escribir prueba -> Verla fallar -> Hacer que pase -> Limpiar codigo) implementado en el desarrollo de la calculadora.*
+El **Desarrollo Guiado por Pruebas (TDD)** es una metodologia en la que primero se escribe el examen que va a fallar (Fase Roja), luego se escribe el codigo minimo necesario para que pase (Fase Verde), y finalmente se limpia y optimiza el codigo (Refactorizacion).
 
-**[ESPACIO_RESERVADO_TEXTO_Y_EXPLICACION_TDD]**
+En la carpeta `Pruebas_tdd/` se incluye:
+*   `test_calculadora_tdd.py`: Archivo estructurado para el ciclo Red-Green-Refactor.
+*   `reporte_TDD_pdf.py`: Script automatizado que ejecuta Pytest en modo silencioso (`-q`), analiza los resultados, extrae estadisticas (aprobados, fallidos y porcentaje de exito) y compila un reporte en PDF (`REPORTE_TDD_FINAL.pdf`) con el estado de salud del software.
 
-### 📸 Evidencia: Pruebas y Ciclos TDD
-**[INSERTAR_CAPTURA_EVIDENCIA_TDD]**
+```bash
+Ejecutando pruebas TDD...
+Generando PDF profesional...
+✅ PDF generado correctamente: REPORTE_TDD_FINAL.pdf
+```
 
 ---
 
-## ⚡ 5. ESPACIO RESERVADO: Pruebas PyTDD
+## ⚡ 5. Pruebas PyTDD
 
-> [!NOTE]
-> *Espacio reservado para detallar la metodologia y ejecucion de pruebas de PyTDD especificas para este proyecto.*
+En la carpeta `PyTDD/` se valido la combinacion directa de metodologias **TDD y PyTest** sobre una implementacion simplificada.
 
-**[ESPACIO_RESERVADO_TEXTO_Y_EXPLICACION_PYTDD]**
+Se implemento el archivo `PyTDD/test_demo_tdd.py` para verificar rapidamente que un descuento estandar (10% sobre 100) devuelva exactamente 90. Esto sirve como validacion de sanidad rapida para comprobar la velocidad de ejecucion del framework.
 
-### 📸 Evidencia: Ejecucion de PyTDD
-**[INSERTAR_CAPTURA_EVIDENCIA_PYTDD]**
+A continuacion, se muestran las evidencias extraidas del informe de implementacion de PyTDD (`Informe test demo.pdf`):
+
+### 📸 Evidencia 5.1: Estructura del proyecto PyTDD
+Muestra los archivos clave en el espacio de trabajo para este metodo.
+![Estructura PyTDD](extracted_images/pytdd_p1_img1.png)
+
+### 📸 Evidencia 5.2: Ejecución de las pruebas de PyTDD con Pytest
+Corrida basica del comando `python -m pytest` donde se detectan y ejecutan de forma automatica todos los modulos.
+![Ejecucion PyTDD](extracted_images/pytdd_p2_img2.png)
+
+### 📸 Evidencia 5.3: Detalle de errores detectados (AssertionError)
+El sistema atrapa cuando los resultados matematicos reales no coinciden con la asercion esperada.
+![Detalle Error PyTDD](extracted_images/pytdd_p2_img3.png)
+
+### 📸 Evidencia 5.4: Detalle de errores de tipo de dato (TypeError)
+Comprobacion automatica de que el codigo falla de manera segura si se inyectan strings u otros tipos no numericos.
+![Type Error PyTDD](extracted_images/pytdd_p2_img4.png)
+
+### 📸 Evidencia 5.5: Resumen final de la practica
+Evidencia el exito y retroalimentacion de PyTest en la validacion de la calidad.
+![Resumen PyTDD](extracted_images/pytdd_p3_img5.png)
 
 ---
 
 ## 📊 6. Medicion de Cobertura (Coverage)
 
-La cobertura nos dice que tanto porcentaje de nuestro archivo principal de codigo (`calculadora.py`) esta protegido y vigilado por las pruebas automatizadas.
+La cobertura de codigo sirve para medir que tanto de nuestra logica principal esta bajo la vigilancia de las pruebas.
 
-Creamos el script `coverage.py` para correr las pruebas y generar un reporte interactivo en HTML que se puede abrir en el navegador.
-*   **Porcentaje de cobertura:** El reporte marca un **36%**. Esto representa el **100% del motor matematico** y logica de calculo de la calculadora. El porcentaje restante no cubierto corresponde exclusivamente a la interfaz de terminal interactiva que manejamos a mano.
+*   **Script Creado:** `Pytest/coverage.py`.
+*   **Resultados:** Se obtuvo una cobertura del **36%**. La logica de calculo aritmetico de la calculadora esta cubierta al **100%**. El 64% no cubierto corresponde exclusivamente a la interfaz visual interactiva que se controla manualmente por la terminal.
 
-### 📸 Evidencia 6.1: Reporte de Cobertura en Consola
-![Reporte de Cobertura](/C:/Users/jhonm/.gemini/antigravity/brain/e16d3154-bac8-4d48-994c-0737e264081a/media__1779286583985.png)
+### 📸 Evidencia 6.1: Reporte de Cobertura en Terminal
+Captura de la salida del comando que genera el reporte interactivo HTML.
+![Reporte de Cobertura](extracted_images/media__1779286583985.png)
 
 ---
 
 ## 🎲 7. Generacion de Datos de Prueba (Faker)
 
-En lugar de usar numeros estaticos escritos a mano, implementamos la libreria **Faker** en el archivo `test_faker.py`.
+Para evitar probar con los mismos numeros estaticos, usamos **Faker** para inyectar datos aleatorios en cada ejecucion de `test_faker.py`.
 
-*   **¿Como funciona?** Faker simula en cada ejecucion **50 casos de compras reales con precios y descuentos aleatorios**.
-*   **Objetivo:** Funciona como una prueba de estres. Comprueba que sin importar que numero aleatorio se le inyecte, la calculadora jamas de precios negativos, nunca supere el valor original y capture de forma segura los valores limites.
+*   **¿Que hace?** Simula 50 compras de forma dinamica con precios de $1 a $10,000 y descuentos de 0% a 100%.
+*   **Objetivo:** Garantizar que ante cualquier numero aleatorio, la calculadora no devuelva valores negativos, no supere el precio original y aplique el redondeo exacto.
 
-### 📸 Evidencia 7.1: Ejecucion de Pruebas de Estres con Faker
-![Pruebas con Faker](/C:/Users/jhonm/.gemini/antigravity/brain/e16d3154-bac8-4d48-994c-0737e264081a/media__1779286611022.png)
+### 📸 Evidencia 7.1: Ejecucion de Faker con Pytest
+![Pruebas con Faker](extracted_images/media__1779286611022.png)
 
 ---
 
 ## ☁️ 8. Subida a GitHub / Control de Versiones
 
-Para almacenar y versionar el proyecto de forma profesional, inicializamos Git, creamos un archivo `.gitignore` para evitar archivos innecesarios, y lo subimos a GitHub en la ruta oficial.
+El codigo completo del proyecto, incluyendo los archivos de configuracion para la ejecucion remota en GitHub Actions (`.github/workflows/pytest-ci.yml`), ha sido sincronizado exitosamente con el repositorio en la nube.
 
-*   Ademas, implementamos **GitHub Actions** (`pytest-ci.yml`) para Integracion Continua. Cada vez que subas cambios, un servidor web correra tus pruebas de forma automatica para verificar que todo este sano.
-*   *Nota: Queda pendiente la captura general de GitHub Actions para cuando se agreguen los demas tests del proyecto.*
-
-### 📸 Evidencia 8.1: Estructura del Proyecto Subida a GitHub (Carpeta Pytest)
-![GitHub Folder Pytest](/C:/Users/jhonm/.gemini/antigravity/brain/e16d3154-bac8-4d48-994c-0737e264081a/media__1779286646289.png)
+### 📸 Evidencia 8.1: Estructura del Proyecto subida a GitHub (Carpeta Pytest)
+Verificacion de los archivos subidos al repositorio oficial en la nube.
+![GitHub Folder Pytest](extracted_images/media__1779286646289.png)
 
 ---
 
 ## 📈 9. Conclusiones Generales
 
-La implementación de pruebas automatizadas y analisis de calidad en la Calculadora de Descuentos nos permite concluir que:
-1.  **Robustez matematica:** La logica de calculo basico, control de decimales y redondeo es 100% segura frente a errores.
-2.  **Seguridad y Control:** Las restricciones de precios (R2) y descuentos (R1) funcionan como un escudo, impidiendo que datos incorrectos rompan la aplicacion.
-3.  **Mantenibilidad a largo plazo:** El uso de Pytest, Cobertura y GitHub Actions facilita que cualquier desarrollador pueda cambiar o mejorar el programa en el futuro sin temor a dañar lo que ya funciona.
+La implementacion de este ecosistema de pruebas unitarias y analisis de calidad en la Calculadora de Descuentos nos permite concluir:
+1.  **Robustez y precision:** La aplicacion responde correctamente a todas las especificaciones comerciales de redondeo y limites matematicos, sin presentar fugas logicas.
+2.  **Multimetodo:** Se cubrieron pruebas interactivas manuales (Caja Negra) y pruebas estructuradas en Pytest y Unittest (Caja Blanca), complementadas con tecnicas modernas de desarrollo como TDD.
+3.  **Seguridad en la Nube:** Con el archivo de workflow de GitHub Actions, el codigo se encuentra protegido en cada actualizacion, evitando fallos en produccion o regresiones lógicas.
